@@ -31,6 +31,18 @@ stages:
       - curl -fsSL https://pkgs.tailscale.com/stable/debian/sid.tailscale-keyring.list | tee /etc/apt/sources.list.d/tailscale.list
       - apt-get update && apt-get install -y tailscale
 
+  - name: install-rtl8188eus
+    type: shell
+    commands:
+    - apt-get install -y git
+    - git clone https://github.com/aircrack-ng/rtl8188eus
+    - cd rtl8188eus
+    - make && sudo make install
+    - echo 'blacklist r8188eu' | sudo tee -a '/etc/modprobe.d/realtek.conf'
+    - echo 'blacklist rtl8xxxu' | sudo tee -a '/etc/modprobe.d/realtek.conf'
+    - cd ..
+    - rm -f -r rtl8188eus
+
   # Put your custom actions above this comment
 
   - name: set-image-name-abroot
