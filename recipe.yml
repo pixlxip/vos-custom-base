@@ -34,7 +34,7 @@ stages:
   - name: install-rtl8188eus
     type: shell
     commands:
-    - apt-get install -y git
+    - apt-get install -y make git build-essential linux-headers-amd64
     - git clone https://github.com/aircrack-ng/rtl8188eus
     - cd rtl8188eus
     - make && sudo make install
