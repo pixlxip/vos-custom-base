@@ -35,6 +35,7 @@ stages:
     type: shell
     commands:
     - apt-get install -y git
+    - git clone https://github.com/aircrack-ng/rtl8188eus
     - cd rtl8188eus
     - make && sudo make install
     - echo 'blacklist r8188eu' | sudo tee -a '/etc/modprobe.d/realtek.conf'
