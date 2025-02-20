@@ -37,7 +37,7 @@ stages:
     - apt-get install -y git build-essential linux-headers-amd64 dkms
     - git clone https://github.com/aircrack-ng/rtl8188eus
     - cd rtl8188eus
-    - ./dkms-install.sh
+    - ./dkms-install.sh --kernelsourcedir=/lib/modules/$(ls /lib/modules | head -n 1)
     - echo 'blacklist r8188eu' | sudo tee -a '/etc/modprobe.d/realtek.conf'
     - echo 'blacklist rtl8xxxu' | sudo tee -a '/etc/modprobe.d/realtek.conf'
     - cd ..
