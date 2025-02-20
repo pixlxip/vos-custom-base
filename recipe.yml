@@ -38,9 +38,9 @@ stages:
     - git clone https://github.com/aircrack-ng/rtl8188eus
     - cd rtl8188eus
     - make KVER=$(ls /lib/modules | head -n 1) KSRC=/lib/modules/$(ls /lib/modules | head -n 1)/build
-    - make install
-    - echo 'blacklist r8188eu' | sudo tee -a '/etc/modprobe.d/realtek.conf'
-    - echo 'blacklist rtl8xxxu' | sudo tee -a '/etc/modprobe.d/realtek.conf'
+    - make install KVER=$(ls /lib/modules | head -n 1) KSRC=/lib/modules/$(ls /lib/modules | head -n 1)/build
+    - echo 'blacklist r8188eu' | tee -a '/etc/modprobe.d/realtek.conf'
+    - echo 'blacklist rtl8xxxu' | tee -a '/etc/modprobe.d/realtek.conf'
     - cd ..
     - rm -f -r rtl8188eus
 
