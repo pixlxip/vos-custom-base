@@ -1,80 +1,80 @@
-name: Nvidia Tailscale # Replace this name with your image name
-id: nvidia-tailscale # Replace this ID with your image ID
+name: Nvidia Tailscale
+id: nvidia-exp-custom
 stages:
-- id: build
-  base: ghcr.io/vanilla-os/nvidia-exp:dev # Optionally, Replace this image URL with a different one i.e. nvidia:main, etc
-  singlelayer: false
-  labels:
-    maintainer: self-maintained # Optionally, Replace this with your name
-  args:
-    DEBIAN_FRONTEND: noninteractive # Set the image environment as non-interactive
-  
-  # Commands to run first before building the modules
-  runs:
-    commands:
-      - echo 'APT::Install-Recommends "1";' > /etc/apt/apt.conf.d/01norecommends
+  - id: build
+    base: ghcr.io/vanilla-os/nvidia-exp:dev
+    singlelayer: false
+    labels:
+      maintainer: self-maintained # Optionally, Replace this with your name
+    args:
+      DEBIAN_FRONTEND: noninteractive # Set the image environment as non-interactive
 
-  modules:
-  - name: init-setup
-    type: shell
-    commands:
-    - lpkg --unlock
-    - apt-get update
+    # Commands to run first before building the modules
+    runs:
+      commands:
+        - echo 'APT::Install-Recommends "1";' > /etc/apt/apt.conf.d/01norecommends
 
-  # Put your custom actions below this comment
-
-  - name: install-tailscale # Sample module demonstrating the Shell module with custom commands
-    type: shell
-    commands:
-      - mkdir -p --mode=0755 /usr/share/keyrings
-      - curl -fsSL https://pkgs.tailscale.com/stable/debian/sid.noarmor.gpg | tee /usr/share/keyrings/tailscale-archive-keyring.gpg >/dev/null
-      - curl -fsSL https://pkgs.tailscale.com/stable/debian/sid.tailscale-keyring.list | tee /etc/apt/sources.list.d/tailscale.list
-      - apt-get update && apt-get install -y tailscale
-
-  - name: install-rtl8188eus
-    type: shell
-    commands:
-    - apt-get install -y git build-essential linux-headers-amd64 dkms
-    - git clone https://github.com/aircrack-ng/rtl8188eus
-    - cd rtl8188eus
-    - make KVER=$(ls /lib/modules | head -n 1) KSRC=/lib/modules/$(ls /lib/modules | head -n 1)/build
-    - make install KVER=$(ls /lib/modules | head -n 1) KSRC=/lib/modules/$(ls /lib/modules | head -n 1)/build
-    - echo 'blacklist r8188eu' | tee -a '/etc/modprobe.d/realtek.conf'
-    - echo 'blacklist rtl8xxxu' | tee -a '/etc/modprobe.d/realtek.conf'
-    - cd ..
-    - rm -f -r rtl8188eus
-
-  # Put your custom actions above this comment
-
-  - name: set-image-name-abroot
-    type: includes
-    includes:
-      - modules/80-set-image-abroot-config.yml
-
-  - name: cleanup
-    type: shell
-    commands:
-    - apt-get autoremove -y
-    - apt-get clean
-    - lpkg --lock
-
-  - name: fsguard
-    type: fsguard
-    CustomFsGuard: false
-    FsGuardLocation: "/usr/sbin/FsGuard"
-    GenerateKey: true
-    FilelistPaths: ["/usr/bin"]
     modules:
-      - name: remove-prev-fsguard
+      - name: init-setup
         type: shell
         commands:
-          - rm -rf /FsGuard 
-          - rm -f ./minisign.pub ./minisign.key 
-          - chmod +x /usr/sbin/init
+          - lpkg --unlock
+          - apt-get update
 
-  - name: cleanup2
-    type: shell
-    commands:
-      - rm -rf /tmp/*
-      - rm -rf /var/tmp/*
-      - rm -rf /sources
+      # Put your custom actions below this comment
+
+      - name: install-tailscale # Sample module demonstrating the Shell module with custom commands
+        type: shell
+        commands:
+          - mkdir -p --mode=0755 /usr/share/keyrings
+          - curl -fsSL https://pkgs.tailscale.com/stable/debian/sid.noarmor.gpg | tee /usr/share/keyrings/tailscale-archive-keyring.gpg >/dev/null
+          - curl -fsSL https://pkgs.tailscale.com/stable/debian/sid.tailscale-keyring.list | tee /etc/apt/sources.list.d/tailscale.list
+          - apt-get update && apt-get install -y tailscale
+
+      - name: install-rtl8188eus
+        type: shell
+        commands:
+          - apt-get install -y git build-essential linux-headers-amd64 dkms
+          - git clone https://github.com/aircrack-ng/rtl8188eus
+          - cd rtl8188eus
+          - make KVER=$(ls /lib/modules | head -n 1) KSRC=/lib/modules/$(ls /lib/modules | head -n 1)/build
+          - make install KVER=$(ls /lib/modules | head -n 1) KSRC=/lib/modules/$(ls /lib/modules | head -n 1)/build
+          - echo 'blacklist r8188eu' | tee -a '/etc/modprobe.d/realtek.conf'
+          - echo 'blacklist rtl8xxxu' | tee -a '/etc/modprobe.d/realtek.conf'
+          - cd ..
+          - rm -f -r rtl8188eus
+
+      # Put your custom actions above this comment
+
+      - name: set-image-name-abroot
+        type: includes
+        includes:
+          - modules/80-set-image-abroot-config.yml
+
+      - name: cleanup
+        type: shell
+        commands:
+          - apt-get autoremove -y
+          - apt-get clean
+          - lpkg --lock
+
+      - name: fsguard
+        type: fsguard
+        CustomFsGuard: false
+        FsGuardLocation: "/usr/sbin/FsGuard"
+        GenerateKey: true
+        FilelistPaths: ["/usr/bin"]
+        modules:
+          - name: remove-prev-fsguard
+            type: shell
+            commands:
+              - rm -rf /FsGuard
+              - rm -f ./minisign.pub ./minisign.key
+              - chmod +x /usr/sbin/init
+
+      - name: cleanup2
+        type: shell
+        commands:
+          - rm -rf /tmp/*
+          - rm -rf /var/tmp/*
+          - rm -rf /sources

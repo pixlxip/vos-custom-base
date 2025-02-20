@@ -2,7 +2,7 @@ name: Vib Build
 
 on:
   push:
-    branches: ["dev"]
+    branches: ["main"]
     tags:
       - "*"
   schedule:
@@ -11,7 +11,7 @@ on:
   workflow_dispatch:
 
 env:
-  CUSTOM_IMAGE_NAME: nvidia-tailscale
+  CUSTOM_IMAGE_NAME: nvidia-exp-custom
   BUILDX_NO_DEFAULT_ATTESTATIONS: 1
 
 jobs:
