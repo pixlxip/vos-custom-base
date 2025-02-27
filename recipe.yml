@@ -1,4 +1,4 @@
-name: Nvidia Tailscale
+name: Nvidia Experimental Custom
 id: nvidia-exp-custom
 stages:
   - id: build
@@ -23,7 +23,7 @@ stages:
 
       # Put your custom actions below this comment
 
-      - name: install-tailscale # Sample module demonstrating the Shell module with custom commands
+      - name: install-tailscale
         type: shell
         commands:
           - mkdir -p --mode=0755 /usr/share/keyrings
