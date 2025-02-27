@@ -48,7 +48,7 @@ stages:
         type: shell
         commands:
           - wget https://repo.protonvpn.com/debian/dists/stable/main/binary-all/protonvpn-stable-release_1.0.6_all.deb
-          - dpkg -i ./protonvpn-stable-release_1.0.6_all.deb && sudo apt update
+          - dpkg -i ./protonvpn-stable-release_1.0.6_all.deb && apt update
           - apt install proton-vpn-gnome-desktop
           - rm -f ./protonvpn-stable-release_1.0.6_all.deb
 
