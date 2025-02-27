@@ -1,4 +1,4 @@
-name: Nvidia Tailscale
+name: Nvidia Experimental Custom
 id: nvidia-exp-custom
 stages:
   - id: build
@@ -23,7 +23,7 @@ stages:
 
       # Put your custom actions below this comment
 
-      - name: install-tailscale # Sample module demonstrating the Shell module with custom commands
+      - name: install-tailscale
         type: shell
         commands:
           - mkdir -p --mode=0755 /usr/share/keyrings
@@ -43,6 +43,14 @@ stages:
           - echo 'blacklist rtl8xxxu' | tee -a '/etc/modprobe.d/realtek.conf'
           - cd ..
           - rm -f -r rtl8188eus
+
+      - name: install-protonvpn
+        type: shell
+        commands:
+          - wget https://repo.protonvpn.com/debian/dists/stable/main/binary-all/protonvpn-stable-release_1.0.6_all.deb
+          - dpkg -i ./protonvpn-stable-release_1.0.6_all.deb && apt update
+          - apt install -y proton-vpn-gnome-desktop
+          - rm -f ./protonvpn-stable-release_1.0.6_all.deb
 
       # Put your custom actions above this comment
 
