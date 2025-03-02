@@ -58,15 +58,17 @@ stages:
 
       - name: gnome-48-control-center
         type: shell
-        source:
-          type: tar
-          url: https://github.com/deezhizyu/gnome-control-center/releases/download/48-beta2/gnome-control-center.tar.xz
-          checksum: f5f0b24681ec4bf90b377403d3ba1db66ccc1caf00cc819384fb44bc82fef881
         commands:
-          - dpkg -i /sources/gnome-control-center/gnome-control-center-data_48~beta-2~99-orchid_all.deb
-          - dpkg -i /sources/gnome-control-center/gnome-control-center_48~beta-2~99-orchid_amd64.deb
+          - wget https://github.com/deezhizyu/gnome-control-center/releases/download/48-beta2/gnome-control-center.tar.xz
+          - mkdir ./gnome-control-center
+          - tar -xf gnome-control-center.tar.xz -C ./gnome-control-center
+
+          - dpkg -i ./gnome-control-center/gnome-control-center-data_48~beta-2~99-orchid_all.deb
+          - dpkg -i ./gnome-control-center/gnome-control-center_48~beta-2~99-orchid_amd64.deb
           - apt -y install -f
           - apt-mark hold gnome-control-center
+
+          - rm -f -r ./gnome-control-center
 
       - name: remove-sid-source
         type: shell
