@@ -44,17 +44,17 @@ stages:
           - cd ..
           - rm -f -r rtl8188eus
 
-      - name: add-sid-source
+      - name: add-experimental-source
         type: shell
         commands:
-          - mv /etc/sid.sources /etc/apt/sources.list.d/
+          - mv /etc/experimental.sources /etc/apt/sources.list.d/
           - mv /etc/apt/sources.list.d/vanilla-base.sources /etc/
           - apt update
 
       - name: gnome-48
         type: shell
         commands:
-          - apt install -t sid -y gdm3 xorg gnome-session gnome-shell gnome-shell-extensions gnome-browser-connector dbus-x11 evolution-data-server geoclue-2.0 gjs mutter xdg-desktop-portal xdg-desktop-portal-gnome xdg-desktop-portal-gtk gdm3 xorg gnome-session gnome-shell gnome-shell-extensions gnome-browser-connector dbus-x11 evolution-data-server geoclue-2.0 gjs mutter xdg-desktop-portal xdg-desktop-portal-gnome xdg-desktop-portal-gtk gsettings-desktop-schemas libatk-adaptor libnotify-bin ibus-gtk ibus-gtk3 ibus-gtk4 libtracker-sparql-3.0-0 libglib2.0-bin libblockdev-crypto3 libpam-gnome-keyring libproxy1-plugin-gsettings libwmf0.2-7-gtk libgdk-pixbuf2.0-bin libjxl-gdk-pixbuf libavif-gdk-pixbuf heif-gdk-pixbuf webp-pixbuf-loader ffmpegthumbnailer gnome-epub-thumbnailer ooo-thumbnailer nautilus nautilus-share python3-nautilus gnome-bluetooth-sendto gnome-color-manager gnome-menus gnome-online-accounts blackbox-terminal nautilus nautilus-share python3-nautilus gnome-bluetooth-sendto gnome-color-manager gnome-menus gnome-online-accounts blackbox-terminal
+          - apt install -t experimental -y gdm3 xorg gnome-session gnome-shell gnome-shell-extensions gnome-browser-connector dbus-x11 evolution-data-server geoclue-2.0 gjs mutter xdg-desktop-portal xdg-desktop-portal-gnome xdg-desktop-portal-gtk gdm3 xorg gnome-session gnome-shell gnome-shell-extensions gnome-browser-connector dbus-x11 evolution-data-server geoclue-2.0 gjs mutter xdg-desktop-portal xdg-desktop-portal-gnome xdg-desktop-portal-gtk gsettings-desktop-schemas libatk-adaptor libnotify-bin ibus-gtk ibus-gtk3 ibus-gtk4 libtracker-sparql-3.0-0 libglib2.0-bin libblockdev-crypto3 libpam-gnome-keyring libproxy1-plugin-gsettings libwmf0.2-7-gtk libgdk-pixbuf2.0-bin libjxl-gdk-pixbuf libavif-gdk-pixbuf heif-gdk-pixbuf webp-pixbuf-loader ffmpegthumbnailer gnome-epub-thumbnailer ooo-thumbnailer nautilus nautilus-share python3-nautilus gnome-bluetooth-sendto gnome-color-manager gnome-menus gnome-online-accounts blackbox-terminal nautilus nautilus-share python3-nautilus gnome-bluetooth-sendto gnome-color-manager gnome-menus gnome-online-accounts blackbox-terminal
           - apt-mark hold libtracker-sparql-3.0-0 tracker-miner-fs
 
       - name: gnome-48-control-center
@@ -72,10 +72,10 @@ stages:
           - rm -f -r ./gnome-control-center
           - rm -f gnome-control-center.tar.xz
 
-      - name: remove-sid-source
+      - name: remove-experimental-source
         type: shell
         commands:
-          - rm /etc/apt/sources.list.d/sid.sources
+          - rm /etc/apt/sources.list.d/experimental.sources
           - mv /etc/vanilla-base.sources /etc/apt/sources.list.d/
           - apt update
 
