@@ -47,7 +47,6 @@ stages:
       - name: install-lact
         type: shell
         commands:
-          - apt -y install hwdata libdrm-common
           - wget https://github.com/ilya-zlobintsev/LACT/releases/download/v0.7.1/lact-0.7.1-0.amd64.ubuntu-2404.deb
           - dpkg -i ./lact-0.7.1-0.amd64.ubuntu-2404.deb
           - apt -y install -f
