@@ -44,14 +44,6 @@ stages:
           - cd ..
           - rm -f -r rtl8188eus
 
-      - name: install-lact
-        type: shell
-        commands:
-          - wget https://github.com/ilya-zlobintsev/LACT/releases/download/v0.7.1/lact-0.7.1-0.amd64.ubuntu-2404.deb
-          - dpkg -i ./lact-0.7.1-0.amd64.ubuntu-2404.deb
-          - apt -y install -f
-          - rm -f ./lact-0.7.1-0.amd64.ubuntu-2404.deb
-
       - name: add-experimental-source
         type: shell
         commands:
