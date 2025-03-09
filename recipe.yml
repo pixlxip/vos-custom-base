@@ -36,6 +36,10 @@ stages:
         commands:
           - dkms uninstall waydroid-binder/1 -k $(cat /usr/share/vanilla/kernel-version)
           - dkms uninstall waydroid-ashmem/1 -k $(cat /usr/share/vanilla/kernel-version)
+          - rm -f -r /sources/waydroid-modules/binder
+          - rm -f -r /usr/src/waydroid-binder-1
+          - rm -f -r /sources/waydroid-modules/ashmem
+          - rm -f -r /usr/src/waydroid-ashmem-1
 
       - name: upgrade-kernel
         type: shell
