@@ -36,10 +36,13 @@ stages:
         commands:
           - dkms uninstall waydroid-binder/1 -k $(cat /usr/share/vanilla/kernel-version)
           - dkms uninstall waydroid-ashmem/1 -k $(cat /usr/share/vanilla/kernel-version)
-          - rm -f -r /sources/waydroid-modules/binder
+          - rm -f -r /sources/waydroid-modules
           - rm -f -r /usr/src/waydroid-binder-1
-          - rm -f -r /sources/waydroid-modules/ashmem
           - rm -f -r /usr/src/waydroid-ashmem-1
+          - rm -f /usr/bin/waydroid
+          - rm -f /usr/share/vso/apx/stacks/vso-waydroid.yaml
+          - rm -f /etc/modules.load.d/waydroid.conf
+          - rm -f /etc/udev/rules.d/99-waydroid.rules
 
       - name: upgrade-kernel
         type: shell
@@ -48,10 +51,16 @@ stages:
           - apt install -t experimental -y linux-image-amd64 linux-headers-amd64
           - rm -f /usr/share/vanilla/kernel-version
           - echo "$(ls -1 /usr/lib/modules | tail -n 1)" > /usr/share/vanilla/kernel-version
-          - ln -s /boot/vmlinuz-6.13-amd64 /boot/vmlinuz-6.13.0-amd64
-          - ln -s /boot/initrd.img-6.13-amd64 /boot/initrd.img-6.13.0-amd64
-          - ln -s /boot/System.map-6.13-amd64 /boot/System.map-6.13.0-amd64
-          - ln -s /boot/config-6.13-amd64 /boot/config-6.13.0-amd64
+          - mv /boot/vmlinuz-6.13-amd64 /boot/vmlinuz-6.13.0-amd64
+          - mv /boot/initrd.img-6.13-amd64 /boot/initrd.img-6.13.0-amd64
+          - mv /boot/System.map-6.13-amd64 /boot/System.map-6.13.0-amd64
+          - mv /boot/config-6.13-amd64 /boot/config-6.13.0-amd64
+          - mv /lib/modules/6.13-amd64 /lib/modules/6.13.0-amd64
+          - ln -s /boot/vmlinuz-6.13.0-amd64 /boot/vmlinuz-6.13-amd64
+          - ln -s /boot/initrd.img-6.13.0-amd64 /boot/initrd.img-6.13-amd64
+          - ln -s /boot/System.map-6.13.0-amd64 /boot/System.map-6.13-amd64
+          - ln -s /boot/config-6.13.0-amd64 /boot/config-6.13-amd64
+          - ln -s /lib/modules/6.13.0-amd64 /lib/modules/6.13-amd64
 
       - name: upgrade-mesa
         type: shell
