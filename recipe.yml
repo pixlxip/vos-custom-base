@@ -31,10 +31,16 @@ stages:
           - mv /etc/apt/sources.list.d/vanilla-base.sources /etc/
           - apt update
 
+      - name: uninstall-waydroid
+        type: shell
+        commands:
+          - dkms uninstall waydroid-binder/1 -k $(cat /usr/share/vanilla/kernel-version)
+          - dkms uninstall waydroid-ashmem/1 -k $(cat /usr/share/vanilla/kernel-version)
+
       - name: upgrade-kernel
         type: shell
         commands:
-          - apt install -t experimental -y linux-headers-amd64 linux-image-amd64
+          - apt install -t experimental -y linux-image-amd64 linux-headers-amd64
 
       - name: upgrade-mesa
         type: shell
