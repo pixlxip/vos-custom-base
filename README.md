@@ -3,4 +3,3 @@ This is my custom image based on the [vanilla-os/nvidia-exp](https://github.com/
 ## Additions
 - [Tailscale](https://tailscale.com/)
 - [RTL8188EUS](https://github.com/aircrack-ng/rtl8188eus)
-- [ProtonVPN](https://protonvpn.com/support/official-linux-vpn-debian/)
