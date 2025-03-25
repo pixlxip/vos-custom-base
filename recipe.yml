@@ -27,7 +27,6 @@ stages:
         type: shell
         commands:
           - mv /etc/sid.sources /etc/apt/sources.list.d/
-          - mv /etc/deb-src.sources /etc/apt/sources.list.d/
           - mv /etc/apt/sources.list.d/vanilla-base.sources /etc/
           - apt update
 
@@ -96,7 +95,6 @@ stages:
         type: shell
         commands:
           - rm /etc/apt/sources.list.d/sid.sources
-          - rm /etc/apt/sources.list.d/deb-src.sources
           - mv /etc/vanilla-base.sources /etc/apt/sources.list.d/
           - apt update
 
