@@ -88,28 +88,6 @@ stages:
             commands:
               - apt build-dep -y mutter
 
-      # Nvidia
-      - name: nvidia-official-repo
-        type: shell
-        commands:
-          - echo 'deb [signed-by=/usr/share/keyrings/nvidia-drivers.gpg] https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/ /' > /etc/apt/sources.list.d/nvidia-drivers.list
-          - apt-get update
-
-      - name: unhold-nvidia
-        type: shell
-        commands:
-          - apt-mark unhold nvidia-kernel-open nvidia-driver nvidia-vaapi-driver nvidia-settings nvidia-persistenced nvidia-smi libnvidia-cfg1 libnvidia-glcore libnvidia-glvkspirv libnvidia-gpucomp libnvidia-fbc1 nvidia-container-toolkit
-
-      - name: nvidia-official-driver
-        type: shell
-        commands:
-          - apt-mark hold nvidia-kernel-open nvidia-driver nvidia-vaapi-driver nvidia-settings nvidia-persistenced nvidia-smi libnvidia-cfg1 libnvidia-glcore libnvidia-glvkspirv libnvidia-gpucomp libnvidia-fbc1 nvidia-container-toolkit
-        modules:
-          - name: update-nvidia
-            type: shell
-            commands:
-              - apt install -t sid -y nvidia-kernel-open nvidia-driver nvidia-vaapi-driver nvidia-settings nvidia-persistenced nvidia-smi libnvidia-cfg1 libnvidia-glcore libnvidia-glvkspirv libnvidia-gpucomp libnvidia-fbc1 nvidia-container-toolkit
-
       # Mesa
       - name: upgrade-mesa
         type: shell
@@ -145,6 +123,40 @@ stages:
           - rm /etc/apt/sources.list.d/sid.sources
           - mv /etc/vanilla-base.sources /etc/apt/sources.list.d/
           - apt update
+
+      # Nvidia
+      - name: nvidia-official-repo
+        type: shell
+        commands:
+          - echo 'deb [signed-by=/usr/share/keyrings/nvidia-drivers.gpg] https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/ /' > /etc/apt/sources.list.d/nvidia-drivers.list
+          - apt-get update
+
+      - name: unhold-nvidia
+        type: shell
+        commands:
+          - apt-mark unhold nvidia-kernel-open nvidia-driver nvidia-vaapi-driver nvidia-settings nvidia-persistenced nvidia-smi libnvidia-cfg1 libnvidia-glcore libnvidia-glvkspirv libnvidia-gpucomp libnvidia-fbc1 nvidia-container-toolkit
+
+      - name: nvidia-official-driver
+        type: shell
+        commands:
+          - apt-mark hold nvidia-kernel-open nvidia-driver nvidia-vaapi-driver nvidia-settings nvidia-persistenced nvidia-smi libnvidia-cfg1 libnvidia-glcore libnvidia-glvkspirv libnvidia-gpucomp libnvidia-fbc1 nvidia-container-toolkit
+        modules:
+          - name: update-nvidia
+            type: apt
+            source:
+              packages:
+                - nvidia-kernel-open
+                - nvidia-driver
+                - nvidia-vaapi-driver
+                - nvidia-settings
+                - nvidia-persistenced
+                - cuda-drivers
+                - libnvidia-cfg1
+                - libnvidia-glcore
+                - libnvidia-glvkspirv
+                - libnvidia-gpucomp
+                - libnvidia-fbc1
+                - nvidia-container-toolkit
 
       - name: cleanup-custom
         type: shell
