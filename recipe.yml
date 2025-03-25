@@ -98,6 +98,16 @@ stages:
           - mv /etc/vanilla-base.sources /etc/apt/sources.list.d/
           - apt update
 
+      # Mutter
+      - name: install-custom-mutter
+        type: shell
+        commands:
+          - apt remove -y mutter
+          - wget https://github.com/deezhizyu/mutter/releases/latest/download/mutter-custom_48.0_amd64.deb
+          - dpkg --force-overwrite -i mutter-custom_48.0_amd64.deb
+          - apt install --fix-broken -y
+          - apt-mark hold mutter
+
       # Nvidia
       - name: nvidia-official-repo
         type: shell
@@ -138,7 +148,7 @@ stages:
           - apt remove -y zutty gnome-shell-extension-prefs
           - SUDO_FORCE_REMOVE=yes apt purge -y sudo
           - rm /etc/apt/sources.list.d/nvidia-drivers.list
-          - apt remove -y git build-essential meson
+          - apt remove -y git build-essential
 
       # Put your custom actions above this comment
 
