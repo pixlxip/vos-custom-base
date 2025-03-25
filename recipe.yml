@@ -23,44 +23,6 @@ stages:
 
       # Put your custom actions below this comment
 
-      - name: add-vanilla-deb-sources
-        type: shell
-        commands:
-          - mv /etc/vanilla-src.sources /etc/apt/sources.list.d/
-          - apt update
-
-      # Mutter
-      - name: compile-mutter
-        type: shell
-        commands:
-          - mkdir builddir
-          - meson setup builddir
-          - meson configure builddir --prefix=/usr
-          - meson compile -C builddir
-          - meson install -C builddir
-          - cd ..
-          - rm -f -r mutter
-          - apt autoremove -y
-        modules:
-          - name: clone-mutter
-            type: shell
-            commands:
-              - apt install -y git build-essential meson
-              - git clone https://gitlab.gnome.org/GNOME/mutter.git
-              - cd mutter
-              - git revert cbdc3ae9 --no-commit
-
-          - name: install-mutter-deps
-            type: shell
-            commands:
-              - apt build-dep -y mutter
-
-      - name: remove-vanilla-deb-sources
-        type: shell
-        commands:
-          - rm /etc/apt/sources.list.d/vanilla-src.sources
-          - apt update
-
       - name: add-debian-sources
         type: shell
         commands:
