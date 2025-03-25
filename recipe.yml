@@ -86,15 +86,7 @@ stages:
           - name: install-mutter-deps
             type: shell
             commands:
-              - mv /etc/sid.sources /etc/apt/sources.list.d/
-              - mv /etc/apt/sources.list.d/vanilla-base.sources /etc/
-              - apt update
-
               - apt build-dep -y mutter
-
-              - rm /etc/apt/sources.list.d/sid.sources
-              - mv /etc/vanilla-base.sources /etc/apt/sources.list.d/
-              - apt update
 
       # Nvidia
       - name: nvidia-official-repo
