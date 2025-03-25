@@ -27,10 +27,10 @@ stages:
         type: shell
         commands:
           - mv /etc/sid.sources /etc/apt/sources.list.d/
-          - mv /etc/experimental.sources /etc/apt/sources.list.d/
           - mv /etc/apt/sources.list.d/vanilla-base.sources /etc/
           - apt update
 
+      # Waydroid
       - name: uninstall-waydroid
         type: shell
         commands:
@@ -62,11 +62,69 @@ stages:
       #     - ln -s /boot/config-6.13.0-amd64 /boot/config-6.13-amd64
       #     - ln -s /lib/modules/6.13.0-amd64 /lib/modules/6.13-amd64
 
+      # Mutter
+      - name: compile-mutter
+        type: shell
+        commands:
+          - mkdir builddir
+          - meson setup builddir
+          - meson configure builddir --prefix=/usr
+          - meson compile -C builddir
+          - meson install -C builddir
+          - cd ..
+          - rm -f -r mutter
+          - apt autoremove -y
+        modules:
+          - name: clone-mutter
+            type: shell
+            commands:
+              - apt install -y git build-essential meson
+              - git clone https://gitlab.gnome.org/GNOME/mutter.git
+              - cd mutter
+              - git revert cbdc3ae9 --no-commit
+
+          - name: install-mutter-deps
+            type: shell
+            commands:
+              - mv /etc/sid.sources /etc/apt/sources.list.d/
+              - mv /etc/apt/sources.list.d/vanilla-base.sources /etc/
+              - apt update
+
+              - apt build-dep -y mutter
+
+              - rm /etc/apt/sources.list.d/sid.sources
+              - mv /etc/vanilla-base.sources /etc/apt/sources.list.d/
+              - apt update
+
+      # Nvidia
+      - name: nvidia-official-repo
+        type: shell
+        commands:
+          - echo 'deb [signed-by=/usr/share/keyrings/nvidia-drivers.gpg] https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/ /' > /etc/apt/sources.list.d/nvidia-drivers.list
+          - apt-get update
+
+      - name: unhold-nvidia
+        type: shell
+        commands:
+          - apt-mark unhold nvidia-kernel-open nvidia-driver nvidia-vaapi-driver nvidia-settings nvidia-persistenced nvidia-smi libnvidia-cfg1 libnvidia-glcore libnvidia-glvkspirv libnvidia-gpucomp libnvidia-fbc1 nvidia-container-toolkit
+
+      - name: nvidia-official-driver
+        type: shell
+        commands:
+          - apt-mark hold nvidia-kernel-open nvidia-driver nvidia-vaapi-driver nvidia-settings nvidia-persistenced nvidia-smi libnvidia-cfg1 libnvidia-glcore libnvidia-glvkspirv libnvidia-gpucomp libnvidia-fbc1 nvidia-container-toolkit
+        modules:
+          - name: update-nvidia
+            type: shell
+            commands:
+              - apt install -t sid -y nvidia-kernel-open nvidia-driver nvidia-vaapi-driver nvidia-settings nvidia-persistenced nvidia-smi libnvidia-cfg1 libnvidia-glcore libnvidia-glvkspirv libnvidia-gpucomp libnvidia-fbc1 nvidia-container-toolkit
+
+      # Mesa
       - name: upgrade-mesa
         type: shell
         commands:
           - apt install -t sid -y mesa-vulkan-drivers libgl1-mesa-dri libglx-mesa0 mesa-utils
 
+      # Gnome 48
       - name: install-gnome-48
         type: shell
         commands:
@@ -93,9 +151,16 @@ stages:
         type: shell
         commands:
           - rm /etc/apt/sources.list.d/sid.sources
-          - rm /etc/apt/sources.list.d/experimental.sources
           - mv /etc/vanilla-base.sources /etc/apt/sources.list.d/
           - apt update
+
+      - name: cleanup-custom
+        type: shell
+        commands:
+          - apt remove -y zutty gnome-shell-extension-prefs
+          - SUDO_FORCE_REMOVE=yes apt purge -y sudo
+          - rm /etc/apt/sources.list.d/nvidia-drivers.list
+          - apt remove -y git build-essential meson
 
       # Put your custom actions above this comment
 

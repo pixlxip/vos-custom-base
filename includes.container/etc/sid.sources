@@ -3,3 +3,9 @@ URIs: http://deb.debian.org/debian
 Suites: sid
 Components: main
 Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
+
+Types: deb-src
+URIs: http://deb.debian.org/debian
+Suites: sid
+Components: main
+Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
