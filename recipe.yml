@@ -103,7 +103,7 @@ stages:
         type: shell
         commands:
           - apt remove -y mutter
-          - wget https://github.com/deezhizyu/mutter/releases/latest/download/mutter-custom_48.0_amd64.deb
+          - wget https://github.com/deezhizyu/gnome-mutter-workflow/releases/latest/download/mutter-custom_48.0_amd64.deb
           - dpkg --force-overwrite -i mutter-custom_48.0_amd64.deb
           - apt install --fix-broken -y
           - apt-mark hold mutter
