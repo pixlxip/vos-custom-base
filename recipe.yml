@@ -23,7 +23,7 @@ stages:
 
       # Put your custom actions below this comment
 
-      - name: add-debian-sources
+      - name: add-sid-sources
         type: shell
         commands:
           - mv /etc/sid.sources /etc/apt/sources.list.d/
@@ -91,7 +91,7 @@ stages:
       #     - rm -f -r ./gnome-control-center
       #     - rm -f gnome-control-center.tar.xz
 
-      - name: remove-debian-sources
+      - name: remove-sid-sources
         type: shell
         commands:
           - rm /etc/apt/sources.list.d/sid.sources
@@ -142,6 +142,7 @@ stages:
                 - libnvidia-fbc1
                 - nvidia-container-toolkit
 
+      # Cleanup
       - name: cleanup-custom
         type: shell
         commands:
