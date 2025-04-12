@@ -90,14 +90,14 @@ stages:
           - apt update
 
       # Mutter
-      - name: install-custom-mutter
-        type: shell
-        commands:
-          - apt remove -y mutter
-          - wget https://github.com/deezhizyu/gnome-mutter-workflow/releases/latest/download/mutter-custom_48.1_amd64.deb
-          - dpkg --force-overwrite -i mutter-custom_48.1_amd64.deb
-          - apt install --fix-broken -y
-          - apt-mark hold mutter
+      # - name: install-custom-mutter
+      #   type: shell
+      #   commands:
+      #     - apt remove -y mutter
+      #     - wget https://github.com/deezhizyu/gnome-mutter-workflow/releases/latest/download/mutter-custom_48.1_amd64.deb
+      #     - dpkg --force-overwrite -i mutter-custom_48.1_amd64.deb
+      #     - apt install --fix-broken -y
+      #     - apt-mark hold mutter
 
       # Nvidia
       - name: nvidia-official-repo
