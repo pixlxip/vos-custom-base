@@ -59,45 +59,12 @@ stages:
         commands:
           - apt install -t sid -y mesa-vulkan-drivers libgl1-mesa-dri libglx-mesa0 mesa-utils
 
-      # Gnome 48
-      - name: install-gnome-48
-        type: shell
-        commands:
-          - apt-mark unhold gnome-control-center
-
-          - apt install -t sid --fix-missing --fix-broken -y gdm3 xorg gnome-session gnome-shell gnome-control-center gnome-shell-extensions gnome-browser-connector dbus-x11 evolution-data-server geoclue-2.0 gjs xdg-desktop-portal xdg-desktop-portal-gnome xdg-desktop-portal-gtk gsettings-desktop-schemas libatk-adaptor libnotify-bin ibus-gtk ibus-gtk3 ibus-gtk4 libglib2.0-bin libblockdev-crypto3 libpam-gnome-keyring libproxy1-plugin-gsettings libwmf0.2-7-gtk libgdk-pixbuf2.0-bin libjxl-gdk-pixbuf libavif-gdk-pixbuf heif-gdk-pixbuf webp-pixbuf-loader ffmpegthumbnailer gnome-epub-thumbnailer ooo-thumbnailer nautilus nautilus-share python3-nautilus gnome-bluetooth-sendto gnome-color-manager gnome-menus gnome-online-accounts blackbox-terminal adwaita-icon-theme
-
-      # - name: install-gnome-48-control-center
-      #   type: shell
-      #   commands:
-      #     - wget https://github.com/deezhizyu/gnome-control-center/releases/download/48-beta2/gnome-control-center.tar.xz
-      #     - mkdir ./gnome-control-center
-      #     - tar -xf gnome-control-center.tar.xz -C ./gnome-control-center
-
-      #     - dpkg -i ./gnome-control-center/gnome-control-center-data_48.0~99-orchid_all.deb
-      #     - dpkg -i ./gnome-control-center/gnome-control-center_48.0~99-orchid_amd64.deb
-      #     - apt -y install -f
-      #     - apt-mark hold gnome-control-center
-
-      #     - rm -f -r ./gnome-control-center
-      #     - rm -f gnome-control-center.tar.xz
-
       - name: remove-sid-sources
         type: shell
         commands:
           - rm /etc/apt/sources.list.d/sid.sources
           - mv /etc/vanilla-base.sources /etc/apt/sources.list.d/
           - apt update
-
-      # Mutter
-      # - name: install-custom-mutter
-      #   type: shell
-      #   commands:
-      #     - apt remove -y mutter
-      #     - wget https://github.com/deezhizyu/gnome-mutter-workflow/releases/latest/download/mutter-custom_48.1_amd64.deb
-      #     - dpkg --force-overwrite -i mutter-custom_48.1_amd64.deb
-      #     - apt install --fix-broken -y
-      #     - apt-mark hold mutter
 
       # Nvidia
       - name: nvidia-official-repo
