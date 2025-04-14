@@ -2,7 +2,7 @@ name: Vanilla OS Custom Image Base
 id: vos-custom-base
 stages:
   - id: build
-    base: ghcr.io/vanilla-os/nvidia-exp:main
+    base: ghcr.io/vanilla-os/desktop:main
     singlelayer: false
     labels:
       maintainer: self-maintained # Optionally, Replace this with your name
