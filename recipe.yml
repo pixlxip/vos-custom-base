@@ -64,7 +64,6 @@ stages:
         type: shell
         commands:
           - apt-mark unhold gnome-control-center
-
           - apt install -t sid --fix-missing --fix-broken -y gdm3 xorg gnome-session gnome-shell gnome-control-center gnome-shell-extensions gnome-browser-connector dbus-x11 evolution-data-server geoclue-2.0 gjs xdg-desktop-portal xdg-desktop-portal-gnome xdg-desktop-portal-gtk gsettings-desktop-schemas libatk-adaptor libnotify-bin ibus-gtk ibus-gtk3 ibus-gtk4 libglib2.0-bin libblockdev-crypto3 libpam-gnome-keyring libproxy1-plugin-gsettings libwmf0.2-7-gtk libgdk-pixbuf2.0-bin libjxl-gdk-pixbuf libavif-gdk-pixbuf heif-gdk-pixbuf webp-pixbuf-loader ffmpegthumbnailer gnome-epub-thumbnailer ooo-thumbnailer nautilus nautilus-share python3-nautilus gnome-bluetooth-sendto gnome-color-manager gnome-menus gnome-online-accounts blackbox-terminal adwaita-icon-theme
 
       - name: remove-sid-sources
@@ -74,47 +73,12 @@ stages:
           - mv /etc/vanilla-base.sources /etc/apt/sources.list.d/
           - apt update
 
-      # Nvidia
-      - name: nvidia-official-repo
-        type: shell
-        commands:
-          - echo 'deb [signed-by=/usr/share/keyrings/nvidia-drivers.gpg] https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/ /' > /etc/apt/sources.list.d/nvidia-drivers.list
-          - apt-get update
-
-      - name: unhold-nvidia
-        type: shell
-        commands:
-          - apt-mark unhold nvidia-kernel-open nvidia-driver nvidia-vaapi-driver nvidia-settings nvidia-persistenced nvidia-smi libnvidia-cfg1 libnvidia-glcore libnvidia-glvkspirv libnvidia-gpucomp libnvidia-fbc1 nvidia-container-toolkit
-
-      - name: nvidia-official-driver
-        type: shell
-        commands:
-          - apt-mark hold nvidia-kernel-open nvidia-driver nvidia-vaapi-driver nvidia-settings nvidia-persistenced nvidia-smi libnvidia-cfg1 libnvidia-glcore libnvidia-glvkspirv libnvidia-gpucomp libnvidia-fbc1 nvidia-container-toolkit
-        modules:
-          - name: update-nvidia
-            type: apt
-            source:
-              packages:
-                - nvidia-kernel-open
-                - nvidia-driver
-                - nvidia-vaapi-driver
-                - nvidia-settings
-                - nvidia-persistenced
-                - cuda-drivers
-                - libnvidia-cfg1
-                - libnvidia-glcore
-                - libnvidia-glvkspirv
-                - libnvidia-gpucomp
-                - libnvidia-fbc1
-                - nvidia-container-toolkit
-
       # Cleanup
       - name: cleanup-custom
         type: shell
         commands:
           - apt remove -y zutty gnome-shell-extension-prefs
           - SUDO_FORCE_REMOVE=yes apt purge -y sudo
-          - rm /etc/apt/sources.list.d/nvidia-drivers.list
           - apt remove -y git build-essential
 
       # Put your custom actions above this comment
